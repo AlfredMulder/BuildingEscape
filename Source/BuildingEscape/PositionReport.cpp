@@ -3,6 +3,7 @@
 
 #include "PositionReport.h"
 #include "GameFramework/Actor.h"
+#include "BuildingEscape.h"
 
 // Sets default values for this component's properties
 UPositionReport::UPositionReport()
@@ -17,8 +18,10 @@ UPositionReport::UPositionReport()
 void UPositionReport::BeginPlay()
 {
 	Super::BeginPlay();
+	
 	const auto ObjectName = GetOwner()->GetName();
-	UE_LOG(LogTemp, Warning, TEXT("Position report reporting for duty on %s!"), *ObjectName);
+	const auto ObjectPos = GetOwner()->GetTransform().GetLocation().ToString(); // Find transformation of actor by it's location
+	UE_LOG(LogTemp, Warning, TEXT("%s is at %s!"), *ObjectName, *ObjectPos);
 }
 
 
