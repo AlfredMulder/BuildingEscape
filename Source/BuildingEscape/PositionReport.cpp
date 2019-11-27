@@ -15,18 +15,18 @@ UPositionReport::UPositionReport()
 
 
 // Called when the game starts
-void UPositionReport::BeginPlay()
+auto UPositionReport::BeginPlay() -> void
 {
 	Super::BeginPlay();
 	
 	const auto ObjectName = GetOwner()->GetName();
 	const auto ObjectPos = GetOwner()->GetTransform().GetLocation().ToString(); // Find transformation of actor by it's location
-	UE_LOG(LogTemp, Warning, TEXT("%s is at %s!"), *ObjectName, *ObjectPos);
 }
 
 
 // Called every frame
-void UPositionReport::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+auto UPositionReport::TickComponent(float DeltaTime, ELevelTick TickType,
+                                    FActorComponentTickFunction* ThisTickFunction) -> void
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
