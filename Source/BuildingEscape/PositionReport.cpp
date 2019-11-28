@@ -25,7 +25,7 @@ auto UPositionReport::BeginPlay() -> void
 
 
 // Called every frame
-auto UPositionReport::TickComponent(float DeltaTime, ELevelTick TickType,
+auto UPositionReport::TickComponent(const float DeltaTime, const ELevelTick TickType,
                                     FActorComponentTickFunction* ThisTickFunction) -> void
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
