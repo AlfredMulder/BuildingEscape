@@ -3,8 +3,10 @@
 
 #include "OpenDoor.h"
 #include "GameFramework/Actor.h"
+#include "Components/PrimitiveComponent.h"
 #include "GameFramework/PlayerController.h"
-#include "Engine/World.h"
+
+#define OUT
 
 // Sets default values for this component's properties
 UOpenDoor::UOpenDoor()
@@ -23,20 +25,11 @@ auto UOpenDoor::BeginPlay() -> void
 	
 	// Find the owning Actor.
 	Owner = GetOwner();
+	if (!PressurePlate)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s missing pressure plate"), *GetOwner()->GetName())
+	}
 		
-	ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
-}
-
-auto UOpenDoor::OpenDoor() const -> void
-{
-	// Set the door rotation.
-	Owner->SetActorRotation(FRotator(0.f, OpenAngle, 0.f));
-}
-
-auto UOpenDoor::CloseDoor() const -> void
-{
-	// Set the door rotation.
-	Owner->SetActorRotation(FRotator(0.f, 0.f, 0.f));
 }
 
 // Called every frame
@@ -45,18 +38,30 @@ auto UOpenDoor::TickComponent(const float DeltaTime, const ELevelTick TickType,
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	
 	// Poll the Trigger Volume
-	// If the ActorThatOpens is in the volume
-	if (PressurePlate->IsOverlappingActor(ActorThatOpens))
+	if (GetTotalMassOfActorsOnPlate() > TriggerMass) // TODO make into a parameter
 	{
-		OpenDoor();
-		LastDoorOpenTime = GetWorld()->GetTimeSeconds();
+		OnOpen.Broadcast();
 	}
-
-	// Check if it's time to close the door.
-	if (GetWorld()->GetTimeSeconds() - LastDoorOpenTime > DoorCloseDelay)
-	{
-		CloseDoor();
-	}
+	else { OnClose.Broadcast(); }
 }
 
+auto UOpenDoor::GetTotalMassOfActorsOnPlate() const -> float
+{
+	auto TotalMass = 0.f;
+
+	// Find all the overlapping actors
+	TArray<AActor*> OverlappingActors;
+	if (!PressurePlate) { return TotalMass; }
+	PressurePlate->GetOverlappingActors(OUT OverlappingActors);
+
+	// Iterate through them adding their masses
+	for (const auto& Actor : OverlappingActors)
+	{
+		TotalMass += Actor->FindComponentByClass<UPrimitiveComponent>()->GetMass();
+		UE_LOG(LogTemp, Warning, TEXT("%s on pressure plate"), *Actor->GetName())
+	}
+
+	return TotalMass;
+}

@@ -21,30 +21,39 @@ public:
 
 protected:
 	// Called when the game starts
-	void BeginPlay() override;
+	auto BeginPlay() -> void override;
 
 public:
 	// Called every frame
-	void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+	auto TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) -> void
 	override;
 
 private:
 	// How far ahead of the player can we reach in cm
 	float Reach = 100.f;
+	
 	UPhysicsHandleComponent* PhysicsHandle = nullptr;
+	
 	UInputComponent* InputComponent = nullptr;
+	
 	// Ray-cast and grab what's in reach
-	void Grab();
+	auto Grab() -> void;
 
 	// Called when grab is released
-	void Release();
-	
+	auto Release() -> void;
+
+	// Returns current end of reach line
+	auto GetReachLineEnd() const -> FVector;
+
+	// Returns current start of reach line
+	auto GetReachLineStart() const -> FVector;
+
 	// Find attached physics handle
-	void FindPhysicsHandleComponent();
+	auto FindPhysicsHandleComponent() -> void;
 
 	// Setup (assumed) attached input component
-	void SetupInputComponent();
+	auto SetupInputComponent() -> void;
 
 	// Return hit for first physics body in reach
-	FHitResult GetFirstPhysicsBodyInReach() const;
+	auto GetFirstPhysicsBodyInReach() const -> FHitResult;
 };
