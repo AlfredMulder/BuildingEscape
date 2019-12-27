@@ -55,7 +55,7 @@ auto UGrabber::Grab() -> void
 	const auto HitResult = GetFirstPhysicsBodyInReach();
 	const auto ComponentToGrab = HitResult.GetComponent(); // Gets the mesh in our case
 	const auto ActorHit = HitResult.GetActor();
-	
+
 	/// If we hit something then attach a physics handle
 	if(ActorHit)
 	{

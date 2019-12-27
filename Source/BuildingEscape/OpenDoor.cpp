@@ -22,7 +22,7 @@ UOpenDoor::UOpenDoor()
 auto UOpenDoor::BeginPlay() -> void
 {
 	Super::BeginPlay();
-	
+
 	// Find the owning Actor.
 	Owner = GetOwner();
 	if (!PressurePlate)
@@ -38,9 +38,9 @@ auto UOpenDoor::TickComponent(const float DeltaTime, const ELevelTick TickType,
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	
+
 	// Poll the Trigger Volume
-	if (GetTotalMassOfActorsOnPlate() > TriggerMass) // TODO make into a parameter
+	if (GetTotalMassOfActorsOnPlate() > TriggerMass)
 	{
 		OnOpen.Broadcast();
 	}

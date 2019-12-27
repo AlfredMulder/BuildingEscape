@@ -41,7 +41,7 @@ private:
 	AActor* Owner = nullptr;
 
 	float TriggerMass = 90.f;
-	
+
 	// Returns total mss in kg
 	auto GetTotalMassOfActorsOnPlate() const -> float;
 };
